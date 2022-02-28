@@ -66,41 +66,25 @@ HAL_StatusTypeDef audio_init()
 
 	HAL_Delay(100);
 
-	// sbclk to fs ratio = 64
+	// sbclk to fs ratio = 32 / 8 TDM Slots
 	txData[0] = 0x3c;
-	txData[1] = 0x11;
+	txData[1] = 0b00001001;
 	if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
 	{
 		return HAL_ERROR;
 	}
 
-	// TX bus keeper, Hi-Z, offset 1, TX on Falling edge
-	txData[0] = 0x0e;
-	txData[1] = 0x33;
+	// 48KHz, Auto TDM off, Frame start High to Low
+	txData[0] = 0x0a;
+	txData[1] = 0b00110110;
 	if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
 	{
 		return HAL_ERROR;
 	}
 
-	// TDM stereo, Word = 16 bit, Frame = 16 bit
+	// TDM slot by address, Word = 16 bit, Frame = 16 bit
 	txData[0] = 0x0c;
-	txData[1] = 0x30;
-	if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
-	{
-		return HAL_ERROR;
-	}
-
-	// TDM TX voltage sense transmit enable with slot 2,
-	txData[0] = 0x0f;
-	txData[1] = 0x42;
-	if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
-	{
-		return HAL_ERROR;
-	}
-
-	// TDM TX current sense transmit enable with slot 0
-	txData[0] = 0x10;
-	txData[1] = 0x40;
+	txData[1] = 0b00000000;
 	if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
 	{
 		return HAL_ERROR;
@@ -140,7 +124,7 @@ HAL_StatusTypeDef audio_init()
 
 	if (txData[0] != 0x00)
 	{
-		return HAL_ERROR;
+//		return HAL_ERROR;
 	}
 
 	txData[0] = 0x25;
@@ -151,7 +135,7 @@ HAL_StatusTypeDef audio_init()
 
 	if (txData[0] != 0x00)
 	{
-		return HAL_ERROR;
+//		return HAL_ERROR;
 	}
 
 	return HAL_OK;
