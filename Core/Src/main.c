@@ -23,6 +23,11 @@
 /* USER CODE BEGIN Includes */
 #include "../../Devices/audio_driver/audio_driver.h"
 
+static void enable_5v()
+{
+	HAL_GPIO_WritePin(CE_5V_GPIO_Port, CE_5V_Pin, GPIO_PIN_SET);
+}
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,6 +105,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  enable_5v();
   audio_init();
   while (1)
   {
@@ -257,12 +263,15 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SOUND_ENABLE_GPIO_Port, SOUND_ENABLE_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : SOUND_ENABLE_Pin */
-  GPIO_InitStruct.Pin = SOUND_ENABLE_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(CE_5V_GPIO_Port, CE_5V_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : SOUND_ENABLE_Pin CE_5V_Pin */
+  GPIO_InitStruct.Pin = SOUND_ENABLE_Pin|CE_5V_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SOUND_ENABLE_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 }
 

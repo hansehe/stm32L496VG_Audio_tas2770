@@ -106,37 +106,37 @@ HAL_StatusTypeDef audio_init()
 		return HAL_ERROR;
 	}
 
-	HAL_Delay(100);
-
-	txData[0] = 0x77;
-	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
-	{
-		return HAL_ERROR;
-	}
-	uint8_t fs_ratio = (txData[0] & 0b00011100) >> 2; // 05h = 96
-	uint8_t fs_rate_v = txData[0] & 0b00000011; // 011b = 44.1/48 KHz
-
-	txData[0] = 0x24;
-	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
-	{
-		return HAL_ERROR;
-	}
-
-	if (txData[0] != 0x00)
-	{
+//	HAL_Delay(100);
+//
+//	txData[0] = 0x77;
+//	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+//	{
 //		return HAL_ERROR;
-	}
-
-	txData[0] = 0x25;
-	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
-	{
-		return HAL_ERROR;
-	}
-
-	if (txData[0] != 0x00)
-	{
+//	}
+//	uint8_t fs_ratio = (txData[0] & 0b00011100) >> 2; // 05h = 96
+//	uint8_t fs_rate_v = txData[0] & 0b00000011; // 011b = 44.1/48 KHz
+//
+//	txData[0] = 0x24;
+//	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+//	{
 //		return HAL_ERROR;
-	}
+//	}
+//
+//	if (txData[0] != 0x00)
+//	{
+////		return HAL_ERROR;
+//	}
+//
+//	txData[0] = 0x25;
+//	if(i2c_port_write_read(TAS2770_I2C_SLAVE_ADDRESS, txData, 1, txData, 1, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+//	{
+//		return HAL_ERROR;
+//	}
+//
+//	if (txData[0] != 0x00)
+//	{
+////		return HAL_ERROR;
+//	}
 
 	return HAL_OK;
 }
@@ -233,7 +233,7 @@ HAL_StatusTypeDef audio_wakeup()
 	return audio_unmute();
 }
 
-HAL_StatusTypeDef audio_play(uint16_t *buffer, uint16_t buflen)
+HAL_StatusTypeDef audio_play(int16_t *buffer, uint16_t buflen)
 {
-	return HAL_SAI_Transmit(&hsai_BlockA2, buffer, buflen, I2S_TX_TIMEOUT_MS);
+	return HAL_SAI_Transmit(&hsai_BlockA2, (uint8_t*)buffer, buflen, I2S_TX_TIMEOUT_MS);
 }

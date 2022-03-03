@@ -24,9 +24,6 @@ i2c_port_status_t i2c_port_write(uint8_t address,
 	if (ret == HAL_OK) {
 		return I2C_PORT_OK;
 	}
-	HAL_I2C_DeInit(&hi2c1);         //release IO port is GPIO, the reset status flag handle
-	HAL_I2C_Init(&hi2c1);           //I2C controller phrase reinitialized
-	return i2c_port_write(address, data, len, timeout);
 	return I2C_PORT_FAIL;
 }
 

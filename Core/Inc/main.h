@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define SOUND_ENABLE_Pin GPIO_PIN_0
 #define SOUND_ENABLE_GPIO_Port GPIOD
+#define CE_5V_Pin GPIO_PIN_7
+#define CE_5V_GPIO_Port GPIOD
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -15,6 +15,6 @@ HAL_StatusTypeDef audio_mute();
 HAL_StatusTypeDef audio_unmute();
 HAL_StatusTypeDef audio_sleep();
 HAL_StatusTypeDef audio_wakeup();
-HAL_StatusTypeDef audio_play(uint16_t *buffer, uint16_t buflen);
+HAL_StatusTypeDef audio_play(int16_t *buffer, uint16_t buflen);
 
 #endif /* AUDIO_DRIVER_H_ */
