@@ -60,17 +60,24 @@ HAL_StatusTypeDef audio_init()
     //
     //
     		txData[0] = 0x05;
-    		txData[1] = 0x20;
+    		txData[1] = 0x00;
     		if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
     		{
     			return HAL_ERROR;
     		}
 
     		txData[0] = 0x03;
-    		txData[1] = 0x06;
+    		txData[1] = 0x14;
     		if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
     		{
     			return HAL_ERROR;
+    		}
+
+    		txData[0] = 0x17;
+    		txData[1] = 0x0a;
+    		if(i2c_port_write(TAS2770_I2C_SLAVE_ADDRESS, txData, 2, AUDIO_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+    		{
+    		    return HAL_ERROR;
     		}
 
     		txData[0] = 0x0a;
