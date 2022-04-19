@@ -57,12 +57,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define STEPPER1_NEN_Pin GPIO_PIN_11
+#define STEPPER1_NEN_GPIO_Port GPIOD
+#define STEPPER2_NEN_Pin GPIO_PIN_15
+#define STEPPER2_NEN_GPIO_Port GPIOD
 #define SOUND_ENABLE_Pin GPIO_PIN_0
 #define SOUND_ENABLE_GPIO_Port GPIOD
 #define CE_5V_Pin GPIO_PIN_7
 #define CE_5V_GPIO_Port GPIOD
-#define CE_MOTOR_V_Pin GPIO_PIN_3
-#define CE_MOTOR_V_Port GPIOB
+#define CE_Pin GPIO_PIN_3
+#define CE_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
