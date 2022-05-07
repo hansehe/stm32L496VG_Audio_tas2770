@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../../Devices/audio_driver/audio_driver.h"
+#include "../../Devices/battery/battery.h"
 
 static void enable_5v()
 {
@@ -31,6 +32,8 @@ static void enable_5v()
 
 	HAL_GPIO_WritePin(STEPPER1_NEN_GPIO_Port, STEPPER1_NEN_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(STEPPER2_NEN_GPIO_Port, STEPPER2_NEN_Pin, GPIO_PIN_SET);
+
+	HAL_GPIO_WritePin(DISP_GPIO_Port, DISP_Pin, GPIO_PIN_SET);
 
 //	HAL_GPIO_WritePin(CE_MOTOR_V_Port, CE_MOTOR_V_Pin, GPIO_PIN_SET);
 //
@@ -121,13 +124,16 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   enable_5v();
+  uint16_t relative_soc = 0;
+  battery_status_t battery_soc = battery_state_of_charge(&relative_soc);
+
   audio_init();
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_SAI_Transmit(&hsai_BlockA2, audio_buffer, 50000, 10000);
+//	  HAL_SAI_Transmit(&hsai_BlockA2, audio_buffer, 50000, 10000);
 //    audio_play(audio_buffer, 50000);
   }
   /* USER CODE END 3 */
@@ -273,8 +279,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DISP_GPIO_Port, DISP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, STEPPER1_NEN_Pin|STEPPER2_NEN_Pin|SOUND_ENABLE_Pin, GPIO_PIN_SET);
@@ -284,6 +294,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(CE_GPIO_Port, CE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : DISP_Pin */
+  GPIO_InitStruct.Pin = DISP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DISP_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : STEPPER1_NEN_Pin STEPPER2_NEN_Pin SOUND_ENABLE_Pin CE_5V_Pin */
   GPIO_InitStruct.Pin = STEPPER1_NEN_Pin|STEPPER2_NEN_Pin|SOUND_ENABLE_Pin|CE_5V_Pin;
