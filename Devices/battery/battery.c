@@ -26,16 +26,16 @@ battery_status_t battery_read_command(uint8_t command, uint16_t *response)
 
     uint8_t rxdata[] = {0, 0};
 
-    if(i2c_port_write(HY4145_I2C_SLAVE_ADDRESS, txdata, 1, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+    if(i2c_port_write(A1141_I2C_SLAVE_ADDRESS, txdata, 1, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
     {
         return BATTERY_ERR_SPI;
     }
-    if(i2c_port_write(HY4145_I2C_SLAVE_ADDRESS, txdata_sec, 1, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+    if(i2c_port_write(A1141_I2C_SLAVE_ADDRESS, txdata_sec, 1, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
     {
         return BATTERY_ERR_SPI;
     }
 
-    if(i2c_port_read(HY4145_I2C_SLAVE_ADDRESS, rxdata, 2, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
+    if(i2c_port_read(A1141_I2C_SLAVE_ADDRESS, rxdata, 2, BATTERY_I2C_TIMEOUT_MS) != I2C_PORT_OK)
     {
         return BATTERY_ERR_SPI;
     }
